@@ -30,24 +30,21 @@ module.exports.getUserByUsername = (username, callback) => User.findOne({ userna
 /**
  * Adding the user to the database after a successful password-hash
  * 
- * Parameters
- * ----------
- * 1) newUser: An object structured according to UserSchema
- * 2) callback: A callback
+ * @param {String} newUser - An object structured according to UserSchema
+ * @param {Any} callback
  * 
- * Returns
- * -------
- * The User object that has had its password hashed and has been
- * saved into a MongoDB cluster.s
+ * Error handling
+ * --------------
+ * Throws error if it is spotted
  */
 module.exports.addUser = (newUser, callback) => 
 {
     bcrypt.genSalt(10, (err, salt) => {
         if(err) throw err;
-        bcrypt.hash(newUser.password.toString(), salt, async (err, hash) => {
+        bcrypt.hash(newUser.password.toString(), salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
-            return await newUser.save();
+            newUser.save(callback);
         });
     });
 }
@@ -55,11 +52,9 @@ module.exports.addUser = (newUser, callback) =>
 /**
  * Using bcrypt to see if the password is correct
  * 
- * Parameters
- * ----------
- * 1) candidatePassword: A password in its user-written form
- * 2) hash: A hash that, hopefully, matches with the password
- * 3) callback: A callback
+ * @param {String} candidatePassword - A password in its user-written form
+ * @param {String} hash - A hash that, hopefully, matches with the password
+ * @param {Any} callback
  * 
  * Error handling
  * --------------

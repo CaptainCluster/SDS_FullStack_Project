@@ -10,7 +10,8 @@ const config        = require("./config/database.js");
 const users         = require("./routes/users");
 
 // Connecting to MongoDB database
-mongoose.connect(process.env.MONGODB);
+mongoose.connect(process.env.MONGODB)
+
 mongoose.connection.on("connected", () => console.log("Successfully established a connection to a MongoDB cluster."));
 mongoose.connection.on("error", (err) => console.log(`Database error: ${err}.`));
 
