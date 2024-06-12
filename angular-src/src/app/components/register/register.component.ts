@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit
     // Registering the user
     this.authService.registerUser(user).subscribe(data => 
     {
-      if (!data.success)
+      if (!data["success"])
       {
         this.flashMessage.show("An error occurred when attempting to register.", { cssClass: "alert-danger", timeout: 3000 });
         this.router.navigate(["/register"]);

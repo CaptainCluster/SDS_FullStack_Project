@@ -3,6 +3,7 @@ const router    = express.Router();
 const passport  = require("passport");
 const jwt       = require("jsonwebtoken");
 
+const config    = require("../config/database.js")
 const User      = require("../models/user.js");
 require("dotenv").config();
 
@@ -53,46 +54,42 @@ router.post("/register", (req, res) =>
  */
 router.post("/authenticate", (req, res) => 
 {
-    const username = req.body.username;
-    const password = req.body.password;
+  const username = req.body.username;
+  const password = req.body.password;
 
-    User.getUserByUsername(username, (err, user) =>
+  User.getUserByUsername(username, (err, user) => 
+  {
+    if(err) throw err;
+    if(!user) 
     {
-        if (err) throw err;
-        if (!user)
-        {
-            return res.json({ success: false, msg: "User not found" });
-        }
-        User.comparePasswords(password, user.password, (err, isMatch) => 
-        {
-            if (err) throw err;
-            if (!isMatch)
-            {
-                return res.json({ success: false, msg: "Wrong password" });
-            }
-            
-            const token = jwt.sign({ data: user }, process.env.MONGODB, { expiresIn: 604800 });
+      return res.json({success: false, msg: "User not found"});
+    }
 
-            res.json({ 
-                success: true,
-                token: `JTW ${token}`,
-                user: {
-                    id: user.id,
-                    name: user.name,
-                    username: user.username,
-                    email: user.email
-                }
-            })
-        });
+    User.comparePasswords(password, user.password, (err, isMatch) => 
+    {
+      if(err) throw err;
+      if(!isMatch) 
+      {
+        return res.json({success: false, msg: "Wrong password"});
+      }
+      const token = jwt.sign({data: user}, config.secret, { expiresIn: 604800 });
+        res.json({
+          success: true,
+          token: "JWT " + token,
+          user: {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email
+          }
+        })
     });
+  });
 });
-
-
 
 router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => 
 {
     res.json({ user: req.user });
 });
-
 
 module.exports = router;

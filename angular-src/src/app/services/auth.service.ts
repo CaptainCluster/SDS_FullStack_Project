@@ -1,49 +1,70 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import "rxjs/add/operator/map";
+import { HttpClient, HttpHeaders} from "@angular/common/http"
+import 'rxjs/add/operator/map';
+import { tokenNotExpired } from "angular2-jwt"
 
 @Injectable()
-
 
 export class AuthService {
   authToken: any;
   user: any;
 
-  constructor(private http: Http) { }
+  constructor(private httpClient: HttpClient) { }
 
-  registerUser(user)
-  {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    return this.http.post(`http://localhost:3000/users/register`, user, { headers: headers })
-      .map(res => res.json());
-  }
-
-  authenticateUser(user)
-  {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    return this.http.post(`http://localhost:3000/users/authenticate`, user, { headers: headers })
-      .map(res => res.json());
-  }
-
-  getProfile()
-  {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append("Authorization", this.authToken);
-    headers.append("Content-Type", "application/json");
-    return this.http.get(`http://localhost:3000/users/profile`,  { headers: headers })
-      .map(res => res.json());
+  /**
+   * A POST request to /user/register in order to register the user
+   * @param {User} user 
+   */
+  registerUser(user) {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json"
+    });
+    return this.httpClient.post('http://localhost:3000/users/register', user, {headers: headers})
   }
 
   /**
-   * Fetching token from localstorage
+   * A POST request to /user/authenticate in order to authenticate the user
+   * @param {User} user
+   */
+  authenticateUser(user) {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json"
+    });
+    return this.httpClient.post('http://localhost:3000/users/authenticate', user, {headers: headers})
+  }
+
+  /**
+   * Fills in necessary headers and sends a GET request to /users/profile
+   */
+  getProfile() {
+    this.loadToken();
+    let headers = new HttpHeaders({
+     "Authorization": this.authToken,
+      "Content-Type": "application/json"
+    });
+
+    return this.httpClient.get('http://localhost:3000/users/profile', {headers: headers})
+  }
+
+  /**
+   * Fetching token from localstorage and assigning it to this.authToken
    */
   loadToken()
   {
     const token = localStorage.getItem("id_token");
     this.authToken = token;
+  }
+
+  /**
+   * Using the JWT token expiration to determine whether the user
+   * is logged in or not.
+   * 
+   * @returns {boolean} A boolean based on token expiration 
+   * (true = not expired, for example)
+   */
+  loggedIn()
+  {
+    return tokenNotExpired("id_token");
   }
 
   /**
