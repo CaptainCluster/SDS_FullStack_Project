@@ -15,7 +15,7 @@ This repository contains the following:
 
 The four exercise modules and their GitHub repository can be by clicking [this link](https://github.com/CaptainCluster/SoftwareDevSkills_FullStack_Modules)
 
-As for the mandatory (in terms of course evaluation) **video**, it can be found by clicking [this link]()
+As for the mandatory (in terms of course evaluation) **video**, it can be found by clicking [this link](https://youtu.be/b_UM34K0NPs?si=KZb30_LFWpOyI4mI)
 
 ❓ How to start the application?
 ---
