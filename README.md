@@ -40,7 +40,9 @@ Run the following commands, if you wish to do so.
 
 > Installing dependencies of Angular: `npm install`
 
-> Building the Angular Application: 
+> Building the Angular Application: `ng build`
+
+Now you should have a *public* folder that allows the application to be run on port 3000, by default.
 
 ❓The Angular side has some errors, why?
 ---
