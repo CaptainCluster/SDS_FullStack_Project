@@ -15,7 +15,7 @@ This repository contains the following:
 
 The four exercise modules and their GitHub repository can be by clicking [this link](https://github.com/CaptainCluster/SoftwareDevSkills_FullStack_Modules)
 
-As for the mandatory (in terms of course evaluation) **video**, it can be found by clicking [this link]()
+As for the mandatory (in terms of course evaluation) **video**, it can be found by clicking [this link](https://youtu.be/b_UM34K0NPs?si=KZb30_LFWpOyI4mI)
 
 ❓ How to start the application?
 ---
@@ -42,6 +42,11 @@ Run the following commands, if you wish to do so.
 
 > Building the Angular Application: 
 
+❓The Angular side has some errors, why?
+---
+If you see plenty of errors, they are most likely false positives that do not hinder the ability of 
+the application to run properly, especially if you have not changed the version of any of the 
+dependencies.
 
 🙏 Appreciation
 ---
